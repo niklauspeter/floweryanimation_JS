@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Roses and Hearts</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: white;
+      position: relative;
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    #animatedText {
+      font-size: 24px;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+<canvas id="animationCanvas"></canvas>
+<div id="animatedText"></div>
+
+<script>
+  // Define your animated elements (roses and hearts) here
+
+  // Example rose image
+  const roseImage = new Image();
+  roseImage.src = 'img/rose.jpg';
+
+  // Example heart image
+  const heartImage = new Image();
+  heartImage.src = 'img/rosef.jpg';
+
+  const lilyImage = new Image();
+  lilyImage.src = 'img/lily.jpg';
+
+  const multicolorImage = new Image();
+  multicolorImage.src = 'img/multicolor.jpg';
+
+  const pinkImage = new Image();
+  pinkImage.src = 'img/pink.jpg';
+
+  const sunflowerImage = new Image();
+  sunflowerImage.src = 'img/sunflower.jpg';
+
+  const dhaliaImage = new Image();
+  dhaliaImage.src = 'img/dhalia.png';
+
+  // Example animation parameters
+  const elements = [];
+
+  function initializeElements() {
+    for (let i = 0; i < 5; i++) { // Adjust the number of elements as needed
+      let randomX, randomY;
+
+      if (Math.random() < 0.5) {
+        // Start from the top or bottom edge
+        randomX = Math.random() * canvas.width;
+        randomY = Math.random() < 0.5 ? -50 : canvas.height;
+      } else {
+        // Start from the left or right edge
+        randomX = Math.random() < 0.5 ? -50 : canvas.width;
+        randomY = Math.random() * canvas.height;
+      }
+
+      const randomSpeed = 1 + Math.random() * 2; // Adjust the speed range as needed
+      const randomImage = Math.random() < 0.5 ? dhaliaImage : multicolorImage ; // Randomly choose between rose and heart
+
+      elements.push({
+        x: randomX,
+        y: randomY,
+        speed: randomSpeed,
+        image: randomImage,
+      });
+    }
+  }
+
+  // Get the canvas and context
+  const canvas = document.getElementById('animationCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Set canvas dimensions
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // Pile limit
+  const pileLimit = window.innerHeight / 2;
+
+  // Function to draw animated elements
+  function draw() {
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the animated elements (roses and hearts)
+    for (const element of elements) {
+      if (element.y < pileLimit) {
+        ctx.drawImage(element.image, element.x, element.y, 50, 50); // Assuming 50x50 for the element
+        element.x += element.speed * (element.x > 0 ? 1 : -1);
+        element.y += element.speed * (element.y > 0 ? 1 : -1);
+      }
+    }
+
+    // Request the next animation frame
+    requestAnimationFrame(draw);
+  }
+
+  // Initialize the animation
+  function init() {
+    initializeElements();
+    // Start the animation loop
+    draw();
+  }
+
+  // Start the animation after the page has loaded
+  window.addEventListener('load', init);
+
+  const paragraph = "This is a dynamically generated paragraph. Each word will appear one at a time.";
+
+  const animatedText = document.getElementById('animatedText');
+
+  function animateText(words, index) {
+    if (index < words.length) {
+      animatedText.innerHTML += words[index] + ' ';
+      index++;
+      setTimeout(() => {
+        animateText(words, index);
+      }, 500); // Adjust the delay between words in milliseconds
+    }
+  }
+
+  // Split the paragraph into an array of words
+  const wordsArray = paragraph.split(' ');
+
+  // Start the animation after the page has loaded
+  window.addEventListener('load', function() {
+    animateText(wordsArray, 0);
+  });
+
+</script>
+
+</body>
+</html>

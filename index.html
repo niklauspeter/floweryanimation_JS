@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Roses and Hearts</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="animationCanvas"></canvas>
+
+<script>
+  // Define your animated elements (roses and hearts) here
+
+  // Example rose image
+  const roseImage = new Image();
+  roseImage.src = 'img/rosef.jpg';
+
+  // Example heart image
+  const heartImage = new Image();
+  heartImage.src = 'img/rose.jpg';
+
+//   // Example animation parameters
+//   const animationSpeed = 1; // Adjust the speed as needed
+//     // Example animation parameters
+//   let x1 = 100, y1 = 100; // Initial position for rose
+//   let x2 = 500, y2 = 500; // Initial position for heart
+//   const speed1 = 1; // Adjust the speed as needed for rose
+//   const speed2 = 2; // Adjust the speed as needed for heart
+ 
+ // Example animation parameters
+ const elements = [
+    { x: 100, y: 100, speed: 1, image: roseImage },
+    { x: 300, y: 300, speed: 2, image: heartImage },
+    { x: 200, y: 50, speed: 1, image: heartImage },
+    { x: 50, y: 150, speed: 2, image: heartImage }
+    // Add more elements as needed
+  ];
+ 
+ 
+  // Get the canvas and context
+  const canvas = document.getElementById('animationCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Set canvas dimensions
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // Function to draw animated elements
+  function draw() {
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // // Draw the animated elements (roses and hearts)
+    // // You can customize the positions, sizes, and animations here
+    // ctx.drawImage(roseImage, x1, y1, 100, 100); // Assuming 50x50 for the rose
+    // ctx.drawImage(heartImage, x2, y2, 50, 50); // Assuming 50x50 for the heart
+
+    // // Update the positions for the next frame
+    // x1 += speed1;
+    // y1 += speed1;
+
+    // x2 += speed2;
+    // y2 -= speed2;
+
+    for (const element of elements) {
+      ctx.drawImage(element.image, element.x, element.y, 50, 50); // Assuming 50x50 for the element
+      element.x += element.speed;
+      element.y += element.speed;
+
+      // Reset position if the element goes out of the screen
+      if (element.x > canvas.width || element.y > canvas.height) {
+        element.x = Math.random() * canvas.width;
+        element.y = -50; // Start from the top again
+      }
+    }
+
+    // Request the next animation frame
+    requestAnimationFrame(draw);
+  }
+
+  // Initialize the animation
+  function init() {
+    // Set initial positions and other parameters for your animated elements
+
+    // Start the animation loop
+    draw();
+  }
+
+  // Start the animation after the page has loaded
+  window.addEventListener('load', init);
+
+</script>
+
+</body>
+</html>
